@@ -8,6 +8,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - 未经用户明确要求，不得擅自代替用户运行或执行 `git diff`、`git status`、`git log` 及其他同类 Git 检查命令。需要用户检查时，只说明建议执行的命令，由用户在本地手动完成。
 - 在回答任何问题、提出设定判断或编辑任何文件前，必须先查询与当前问题相关的现行世界观知识库：优先阅读 `README.md`、`docs/00-设定索引.md` 及相关 `docs/` 页面，并以查到的内容为依据。不得把模型记忆、聊天上下文或 `archive/` 内容当作现行事实；资料没有明确记载时，必须说明“未知”“待定”或“需要用户确认”，不得擅自编造、推断或扩展用户的世界观。
 
+## 子 Agent 路由
+
+- 凡需要与用户探讨世界观、比较方案、处理正典冲突、进行设定决策或形成大纲，必须委派 `setting-architect`，使用 `gpt-5.6-sol`。
+- 凡需要广泛读取上下文，或依据已确认大纲进行具体撰写、改写和文档整合，必须委派 `context-writer`，使用 `gpt-5.6-terra`。
+- 凡结果明确且不涉及语义判断的格式、链接、索引、元数据、检查和精确替换任务，委派 `mechanical-editor`，使用 `gpt-5.6-luna`。
+- 不得因为任务看似简单而让 `context-writer` 或 `mechanical-editor` 作出设定决策。
+- `context-writer` 或 `mechanical-editor` 发现未决事项、资料冲突或多个合理方案时，必须停止并上报，不得自行补全。
+- 涉及世界观的完整流程默认采用：`context-writer` 检索并整理上下文 → `setting-architect` 与用户讨论并确定大纲 → `context-writer` 具体撰写 → `mechanical-editor` 完成机械检查和收尾。
+- 如果用户已经给出明确、完整且不需要进一步取舍的决策或大纲，可以直接从 `context-writer` 阶段开始；纯机械任务可以直接使用 `mechanical-editor`。
+
 ## Repository Overview
 
 《白色高塔》 is a Chinese-language worldbuilding and setting repository. It is a Markdown knowledge base, not an application: there is no package manager, build system, executable, or automated test suite in the repository.
